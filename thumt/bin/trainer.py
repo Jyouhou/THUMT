@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 # Copyright 2018 The THUMT Authors
-
+# reset
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -144,12 +144,12 @@ def collect_params(all_params, params):
 def merge_parameters(params1, params2):
     params = tf.contrib.training.HParams()
 
-    for (k, v) in params1.values().iteritems():
+    for (k, v) in params1.values().items():
         params.add_hparam(k, v)
 
     params_dict = params.values()
 
-    for (k, v) in params2.values().iteritems():
+    for (k, v) in params2.values().items():
         if k in params_dict:
             # Override
             setattr(params, k, v)
