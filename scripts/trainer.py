@@ -5,7 +5,8 @@ import os
 import types
 import datetime
 
-root_dir = '/home/zhangjiacheng/git/THUMT_170913'
+# root_dir = '/home/zhangjiacheng/git/THUMT_170913'
+root_dir = '/home/rjq/project/THUMT_theano_ruan'
 code_dir = root_dir + '/thumt'
 
 def version():

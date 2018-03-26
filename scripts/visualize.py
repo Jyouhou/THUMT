@@ -3,7 +3,8 @@
 import sys
 import os
 
-root_dir = '/data/disk1/private/ly/THUMT'
+# root_dir = '/data/disk1/private/ly/THUMT'
+root_dir = '/home/rjq/project/THUMT_theano_ruan'
 code_dir = root_dir + '/thumt'
 
 def version():
