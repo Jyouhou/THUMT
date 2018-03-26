@@ -135,7 +135,7 @@ def export_params(output_dir, name, params):
 def collect_params(all_params, params):
     collected = tf.contrib.training.HParams()
 
-    for k in params.values().iterkeys():
+    for k in params.values().keys():
         collected.add_hparam(k, getattr(all_params, k))
 
     return collected
