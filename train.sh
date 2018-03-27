@@ -11,4 +11,5 @@ python /home/rjq/project/THUMT_theano_ruan/scripts/trainer.py \
        --trn-trg-file ${TRAIN}train.en.shuf \
        --vld-src-file ${VALID}nist06.cn \
        --vld-trg-file ${VALID}nist06.en0 \
-       --device gpu3,gpu4
+       --device gpu3,gpu4 \
+       --debug 1
