@@ -102,7 +102,7 @@ def default_parameters():
         len_ratio_MRT=1.5,
         # focal
         FOCAL=False,
-        focal_from=15000,
+        focal_from=20000,
     )
 
     return params
