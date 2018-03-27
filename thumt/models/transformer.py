@@ -10,7 +10,7 @@ import copy
 import tensorflow as tf
 import thumt.interface as interface
 import thumt.layers as layers
-
+from thumt.utils.loss import get_loss
 
 def get_weights(params):
     svocab = params.vocabulary["source"]
@@ -231,7 +231,8 @@ def model_graph(features, labels, mode, params):
     )
 
     ce = tf.reshape(ce, tf.shape(tgt_seq))
-    loss = tf.reduce_sum(ce * tgt_mask) / tf.reduce_sum(tgt_mask)
+    # loss = tf.reduce_sum(ce * tgt_mask) / tf.reduce_sum(tgt_mask)
+    loss = get_loss(features, params, ce, tgt_mask)
 
     return loss
 

@@ -19,7 +19,7 @@ import thumt.utils.hooks as hooks
 import thumt.utils.utils as utils
 import thumt.utils.parallel as parallel
 import thumt.utils.search as search
-
+import thumt.utils.mrt_utils as mrt_utils
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
@@ -95,7 +95,11 @@ def default_parameters():
         references=[""],
         save_checkpoint_secs=0,
         save_checkpoint_steps=1000,
-        # mrt
+        # MRT
+        MRT=False,
+        alpha_MRT=0.005,
+        sample_num_MRT=10,
+        len_ratio_MRT=1.5
     )
 
     return params
@@ -300,6 +304,10 @@ def main(args):
         # Build model
         initializer = get_initializer(params)
         model = model_cls(params)
+
+        if params.MRT:
+            assert params.batch_size == 1
+            features = mrt_utils.get_mrt_features(features, params, model)
 
         # Multi-GPU setting
         sharded_losses = parallel.parallel_model(

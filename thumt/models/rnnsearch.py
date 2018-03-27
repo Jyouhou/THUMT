@@ -10,7 +10,7 @@ import copy
 import tensorflow as tf
 import thumt.interface as interface
 import thumt.layers as layers
-
+from thumt.utils.loss import get_loss
 
 def _copy_through(time, length, output, new_output):
     copy_cond = (time >= length)
@@ -304,6 +304,8 @@ def model_graph(features, labels, params):
                               scope="softmax")
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
+    #TODO
+    print(tf.shape(labels))
     ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
         logits=logits,
         labels=labels,
@@ -319,7 +321,8 @@ def model_graph(features, labels, params):
         )
     )
 
-    loss = tf.reduce_sum(ce * tgt_mask) / tf.reduce_sum(tgt_mask)
+    # loss = tf.reduce_sum(ce * tgt_mask) / tf.reduce_sum(tgt_mask)
+    loss = get_loss(features, params, ce, tgt_mask)
 
     return loss
 
