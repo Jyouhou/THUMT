@@ -307,15 +307,15 @@ def model_graph(features, labels, params):
 
     if params.FOCAL:
         global_step = tf.train.get_or_create_global_step()
-        ce = tf.where(global_step>params.focal_from,
-                      focal_loss(logits,labels),
-                      layers.nn.smoothed_softmax_cross_entropy_with_logits(
-                          logits=logits,
-                          labels=labels,
-                          smoothing=params.label_smoothing,
-                          normalize=True
-                      ))
-        # ce = focal_loss(logits,labels)
+        # ce = tf.where(global_step>params.focal_from,
+        #               focal_loss(logits,labels),
+        #               layers.nn.smoothed_softmax_cross_entropy_with_logits(
+        #                   logits=logits,
+        #                   labels=labels,
+        #                   smoothing=params.label_smoothing,
+        #                   normalize=True
+        #               ))
+        ce = focal_loss(logits,labels)
     else:
         ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
             logits=logits,
