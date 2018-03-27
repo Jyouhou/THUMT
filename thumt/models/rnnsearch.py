@@ -304,8 +304,9 @@ def model_graph(features, labels, params):
                               scope="softmax")
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
-    #TODO
-    print(tf.shape(labels))
+    # TODO
+    print("logits", tf.shape(logits))
+    print("labels", tf.shape(labels))
     ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
         logits=logits,
         labels=labels,
