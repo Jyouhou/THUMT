@@ -306,7 +306,7 @@ def model_graph(features, labels, params):
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
     if params.FOCAL:
-        global_step = tf.train.get_or_create_global_step()
+        # global_step = tf.train.get_or_create_global_step()
         # ce = tf.where(global_step>params.focal_from,
         #               focal_loss(logits,labels),
         #               layers.nn.smoothed_softmax_cross_entropy_with_logits(
