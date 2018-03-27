@@ -302,12 +302,12 @@ def model_graph(features, labels, params):
     # Prediction
     logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                               scope="softmax")
-    print("logits before", tf.shape(logits))
+    print("logits before", logits.shape)
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
     # TODO
-    print("logits", tf.shape(logits))
-    print("labels", tf.shape(labels))
+    print("logits", logits.shape)
+    print("labels", logits.shape)
     ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
         logits=logits,
         labels=labels,
