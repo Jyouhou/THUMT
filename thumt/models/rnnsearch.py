@@ -302,7 +302,7 @@ def model_graph(features, labels, params):
     # Prediction
     logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                               scope="softmax")
-    print("logits before", tf.shape(logits
+    print("logits before", tf.shape(logits))
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
     # TODO
