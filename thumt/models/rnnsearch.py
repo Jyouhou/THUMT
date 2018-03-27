@@ -11,6 +11,7 @@ import tensorflow as tf
 import thumt.interface as interface
 import thumt.layers as layers
 from thumt.utils.loss import get_loss
+from thumt.utils.focal_loss import focal_loss
 
 def _copy_through(time, length, output, new_output):
     copy_cond = (time >= length)
@@ -304,16 +305,23 @@ def model_graph(features, labels, params):
                               scope="softmax")
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
-    # TODO
-    print('logits', logits.shape)
-    print('labels', labels.shape)
-    ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
-        logits=logits,
-        labels=labels,
-        smoothing=params.label_smoothing,
-        normalize=True
-    )
-    print('ce', ce.shape)
+    if params.FOCAL:
+        global_step = tf.train.get_or_create_global_step()
+        ce = tf.where(global_step>params.focal_from,
+                      focal_loss(logits,labels),
+                      ce=layers.nn.smoothed_softmax_cross_entropy_with_logits(
+                          logits=logits,
+                          labels=labels,
+                          smoothing=params.label_smoothing,
+                          normalize=True
+                      ))
+    else:
+        ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
+            logits=logits,
+            labels=labels,
+            smoothing=params.label_smoothing,
+            normalize=True
+        )
 
     ce = tf.reshape(ce, tf.shape(labels))
     tgt_mask = tf.to_float(
