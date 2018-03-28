@@ -453,6 +453,9 @@ def create_inference_graph(model_fns, features, params):
         features["target_length"] = tf.fill([tf.shape(features["target"])[0]],
                                             tf.shape(features["target"])[1])
 
+        #TODO
+        print('target', features["target"].shape)
+        print('target_len', features['target_length'].shape)
         results = []
 
         for i, model_fn in enumerate(model_fns):
