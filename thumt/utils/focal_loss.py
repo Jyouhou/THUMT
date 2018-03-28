@@ -34,8 +34,8 @@ def focal_loss(logits, labels, weights=None, alpha=0.25, gamma=2, scope=None):
         # For negative prediction, only need consider back part loss, front part is 0;
         # target_tensor > zeros <=> z=1, so negative coefficient = 0.
         neg_p_sub = tf.where(labels > zeros, zeros, sigmoid_p)
-        per_entry_cross_ent = - alpha * (pos_p_sub ** gamma) * tf.log(tf.clip_by_value(sigmoid_p, 1e-8, 1.0)) \
-                          - (1 - alpha) * (neg_p_sub ** gamma) * tf.log(tf.clip_by_value(1.0 - sigmoid_p, 1e-8, 1.0))
+        per_entry_cross_ent = - alpha * (tf.pow(pos_p_sub,gamma)) * tf.log(tf.clip_by_value(sigmoid_p, 1e-8, 1.0)) \
+                          - (1 - alpha) * (tf.pow(neg_p_sub,gamma)) * tf.log(tf.clip_by_value(1.0 - sigmoid_p, 1e-8, 1.0))
     return tf.reduce_mean(per_entry_cross_ent,-1)
 
 
