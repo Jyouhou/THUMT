@@ -392,6 +392,12 @@ def beam_search(symbols_to_logits_fn, initial_ids, beam_size, decode_length,
         return tf.logical_and(tf.less(i, decode_length),
                               tf.logical_not(bound_is_met))
 
+    #TODO
+    print('alive_seq', alive_seq.shape)
+    print('alive_log_probs', alive_log_probs.shape)
+    print('finished_seq', finished_seq.shape)
+    print('finished_scores', finished_scores.shape)
+    print('finished_flags', finished_flags.shape)
     (_, alive_seq, alive_log_probs, finished_seq, finished_scores,
      finished_flags) = tf.while_loop(
         _is_finished,
@@ -410,6 +416,11 @@ def beam_search(symbols_to_logits_fn, initial_ids, beam_size, decode_length,
         parallel_iterations=1,
         back_prop=False
     )
+    print('alive_seq', alive_seq.shape)
+    print('alive_log_probs', alive_log_probs.shape)
+    print('finished_seq', finished_seq.shape)
+    print('finished_scores', finished_scores.shape)
+    print('finished_flags', finished_flags.shape)
 
     alive_seq.set_shape((None, beam_size, None))
     finished_seq.set_shape((None, beam_size, None))
@@ -481,6 +492,8 @@ def create_inference_graph(model_fns, features, params):
     # Setting decode length to input length + decode_length
     decode_length = tf.shape(features["source"])[1] + decode_length
 
+    #TODO
+    print('initial_ids', initial_ids.shape)
     ids, scores = beam_search(symbols_to_logits_fn, initial_ids,
                               beam_size, decode_length, vocab_size,
                               alpha,
