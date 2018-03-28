@@ -80,7 +80,7 @@ def default_parameters():
         learning_rate_boundaries=[0],
         learning_rate_values=[0.0],
         keep_checkpoint_max=5,
-        keep_top_checkpoint_max=1,
+        keep_top_checkpoint_max=5,
         # Validation
         eval_steps=2000,
         eval_secs=0,
@@ -102,7 +102,7 @@ def default_parameters():
         len_ratio_MRT=1.5,
         # focal
         FOCAL=False,
-        focal_from=20000,
+        focal_from=40000,
     )
 
     return params
