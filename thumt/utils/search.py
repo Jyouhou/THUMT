@@ -76,10 +76,11 @@ def compute_topk_scores_and_seq(sequences, scores, scores_to_gather, flags,
     #TODO
     print('top_cord', top_coordinates.shape)
     print('sequences', sequences.shape)
-    print('topk_seq', topk_seq.shape)
     topk_seq = tf.gather_nd(sequences, top_coordinates)
     topk_flags = tf.gather_nd(flags, top_coordinates)
     topk_gathered_scores = tf.gather_nd(scores_to_gather, top_coordinates)
+    print('topk_seq', topk_seq.shape)
+
     return topk_seq, topk_gathered_scores, topk_flags
 
 
