@@ -14,6 +14,7 @@ INF = 1. * 1e7
 
 
 def log_prob_from_logits(logits):
+    # [batch_size, beam_size, vocabularly]
     return logits - tf.reduce_logsumexp(logits, axis=2, keep_dims=True)
 
 
@@ -72,6 +73,10 @@ def compute_topk_scores_and_seq(sequences, scores, scores_to_gather, flags,
     top_coordinates = tf.stack([batch_pos, topk_indexes], axis=2)
 
     # Gather up the highest scoring sequences
+    #TODO
+    print('top_cord', top_coordinates.shape)
+    print('sequences', sequences.shape)
+    print('topk_seq', topk_seq.shape)
     topk_seq = tf.gather_nd(sequences, top_coordinates)
     topk_flags = tf.gather_nd(flags, top_coordinates)
     topk_gathered_scores = tf.gather_nd(scores_to_gather, top_coordinates)
