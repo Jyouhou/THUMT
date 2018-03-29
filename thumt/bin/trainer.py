@@ -97,7 +97,7 @@ def default_parameters():
         save_checkpoint_steps=1000,
         # MRT
         MRT=False,
-        alpha_MRT=0.005,
+        mrt_alpha=0.005,
         mrt_sample=100,
         mrt_length_ratio=1.5,
         # focal
