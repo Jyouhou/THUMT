@@ -99,7 +99,7 @@ def default_parameters():
         MRT=False,
         alpha_MRT=0.005,
         mrt_sample=100,
-        len_ratio_MRT=1.5,
+        mrt_length_ratio=1.5,
         # focal
         FOCAL=False,
         focal_from=40000,
