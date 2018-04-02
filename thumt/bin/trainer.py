@@ -432,12 +432,6 @@ def main(args):
             )
 
         #TODO
-        config = session_config(params)
-        with tf.Session(config=config) as sess:
-            sess.run(tf.global_variables_initializer())
-            features=sess.run(features)
-            print(features)
-
         # Create session, do not use default CheckpointSaverHook
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
@@ -447,7 +441,19 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
-                sess.run(train_op)
+                results = sess.run(features)
+                print(results)
+
+        # # Create session, do not use default CheckpointSaverHook
+        # with tf.train.MonitoredTrainingSession(
+        #         checkpoint_dir=params.output, hooks=train_hooks,
+        #         save_checkpoint_secs=None, config=config) as sess:
+        #     while not sess.should_stop():
+        #         # Bypass hook calls
+        #         utils.session_run(sess, zero_op)
+        #         for i in range(1, params.update_cycle):
+        #             utils.session_run(sess, collect_op)
+        #         sess.run(train_op)
 
 
 if __name__ == "__main__":
