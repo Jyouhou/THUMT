@@ -10,7 +10,7 @@ python /home/rjq/project/THUMT_theano_ruan/scripts/trainer.py \
        --trn-src-file ${TRAIN}train.zh.shuf \
        --trn-trg-file ${TRAIN}train.en.shuf \
        --vld-src-file ${VALID}nist06.cn \
-       --vld-trg-file ${VALID}nist06.en0 \
+       --vld-trg-file ${VALID}nist06.en0 ${VALID}nist06.en1 ${VALID}nist06.en2 ${VALID}nist06.en3 \
        --debug 1 \
        --training-criterion 1 \
        --init-model-file model_mle_best.npz \
