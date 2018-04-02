@@ -299,10 +299,14 @@ def main(args):
         if not params.record:
             # Build input queue
             features = dataset.get_training_input(params.input, params)
+            #TODO
+            store_feature = features
         else:
             features = record.get_input_features(
                 os.path.join(params.record, "*train*"), "train", params
             )
+            #TODO
+            store_feature = features
 
         # Build model
         initializer = get_initializer(params)
@@ -442,7 +446,12 @@ def main(args):
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
                 results = sess.run(features)
-                print("===print example one=====")
+                print("===original features=====")
+                for k, v in store_feature.items():
+                    print('-----------')
+                    print("key: ", k)
+                    print("value: ", v.tolist())
+                    print("===print example one=====")
                 for k,v in results.items():
                     print('-----------')
                     print("key: ", k)
