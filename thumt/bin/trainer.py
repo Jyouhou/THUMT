@@ -446,3 +446,16 @@ def main(args):
 
 if __name__ == "__main__":
     main(parse_args())
+# if __name__ == "__main__":
+#     main(parse_args(
+#       ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
+#        '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
+#        '--model', 'RNNsearch',
+#        '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
+#        '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
+#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
+#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
+#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
+#        '--parameters', 'device_list=[0,2],train_steps=300000,MRT=True,batch_size=1']))
+#
+# #['--foo', 'BAR']
