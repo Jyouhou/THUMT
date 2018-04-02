@@ -401,15 +401,15 @@ def main(args):
         train_hooks = [
             tf.train.StopAtStepHook(last_step=params.train_steps),
             tf.train.NanTensorHook(loss),
-            # tf.train.LoggingTensorHook(
-            #     {
-            #         "step": global_step,
-            #         "loss": loss,
-            #         "source": tf.shape(features["source"]),
-            #         "target": tf.shape(features["target"])
-            #     },
-            #     every_n_iter=1
-            # ),
+            tf.train.LoggingTensorHook(
+                {
+                    "step": global_step,
+                    "loss": loss,
+                    "source": tf.shape(features["source"]),
+                    "target": tf.shape(features["target"])
+                },
+                every_n_iter=1
+            ),
             tf.train.CheckpointSaverHook(
                 checkpoint_dir=params.output,
                 save_secs=params.save_checkpoint_secs or None,
@@ -423,21 +423,21 @@ def main(args):
 
         config = session_config(params)
 
-        # if eval_input_fn is not None:
-        #     train_hooks.append(
-        #         hooks.EvaluationHook(
-        #             lambda f: search.create_inference_graph(
-        #                 model.get_evaluation_func(), f, params
-        #             ),
-        #             lambda: eval_input_fn(eval_inputs, params),
-        #             lambda x: decode_target_ids(x, params),
-        #             params.output,
-        #             config,
-        #             params.keep_top_checkpoint_max,
-        #             eval_secs=params.eval_secs,
-        #             eval_steps=params.eval_steps
-        #         )
-        #     )
+        if eval_input_fn is not None:
+            train_hooks.append(
+                hooks.EvaluationHook(
+                    lambda f: search.create_inference_graph(
+                        model.get_evaluation_func(), f, params
+                    ),
+                    lambda: eval_input_fn(eval_inputs, params),
+                    lambda x: decode_target_ids(x, params),
+                    params.output,
+                    config,
+                    params.keep_top_checkpoint_max,
+                    eval_secs=params.eval_secs,
+                    eval_steps=params.eval_steps
+                )
+            )
 
         #TODO
         # Create session, do not use default CheckpointSaverHook
