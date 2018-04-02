@@ -14,6 +14,7 @@ INF = 1. * 1e7
 
 def get_mrt_features(features, params, model):
     # Generate samples
+    print('before features', features)
     samples = create_sampling_graph(model.get_inference_func(), features,
                                     params, training=True)
 
@@ -55,6 +56,7 @@ def get_mrt_features(features, params, model):
     # Set target
     features["target"] = features["samples"]
     features["target_length"] = features["sample_length"]
+    print('after features', features)
     return features
 
 
