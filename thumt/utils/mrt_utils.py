@@ -89,7 +89,7 @@ def get_unique(sens, eos):
 
 def get_len(sen, eos):
     indices = tf.where(tf.equal(sen, eos))
-    result = tf.segment_min(indices[:,1], indices[:,0])
+    result = tf.segment_min(indices[:,1], indices[:,0])+1
     return result
 
 
