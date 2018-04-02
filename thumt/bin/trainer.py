@@ -300,13 +300,17 @@ def main(args):
             # Build input queue
             features = dataset.get_training_input(params.input, params)
             #TODO
-            store_feature = features
+            store_feature = {}
+            for k,v in features.items():
+                store_feature[k] =v
         else:
             features = record.get_input_features(
                 os.path.join(params.record, "*train*"), "train", params
             )
             #TODO
-            store_feature = features
+            store_feature = {}
+            for k,v in features.items():
+                store_feature[k] =v
 
         # Build model
         initializer = get_initializer(params)
@@ -472,18 +476,18 @@ def main(args):
         #         sess.run(train_op)
 
 
-if __name__ == "__main__":
-    main(parse_args())
 # if __name__ == "__main__":
-#     main(parse_args(
-#       ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
-#        '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
-#        '--model', 'RNNsearch',
-#        '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
-#        '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
-#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
-#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
-#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
-#        '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1']))
-#
-# #['--foo', 'BAR']
+#     main(parse_args())
+if __name__ == "__main__":
+    main(parse_args(
+      ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
+       '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
+       '--model', 'RNNsearch',
+       '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
+       '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
+       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
+       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
+       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
+       '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1,mrt_sample=3']))
+
+#['--foo', 'BAR']
