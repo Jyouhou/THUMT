@@ -444,8 +444,9 @@ def main(args):
                 results = sess.run(features)
                 print("===print example one=====")
                 for k,v in results.items():
+                    print('-----------')
                     print("key: ", k)
-                    print("value: ", v)
+                    print("value: ", v.tolist())
 
 
         # # Create session, do not use default CheckpointSaverHook
