@@ -443,7 +443,7 @@ def main(args):
                     utils.session_run(sess, collect_op)
                 results = sess.run(features)
                 print("===print example one=====")
-                for k,v in features.items():
+                for k,v in results.items():
                     print("key: ", k)
                     print("value: ", v)
 
