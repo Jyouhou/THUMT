@@ -300,17 +300,17 @@ def main(args):
             # Build input queue
             features = dataset.get_training_input(params.input, params)
             #TODO
-            store_feature = {}
-            for k,v in features.items():
-                store_feature[k] =v
+            # store_feature = {}
+            # for k,v in features.items():
+            #     store_feature[k] =v
         else:
             features = record.get_input_features(
                 os.path.join(params.record, "*train*"), "train", params
             )
             #TODO
-            store_feature = {}
-            for k,v in features.items():
-                store_feature[k] =v
+            # store_feature = {}
+            # for k,v in features.items():
+            #     store_feature[k] =v
 
         # Build model
         initializer = get_initializer(params)
@@ -441,40 +441,40 @@ def main(args):
 
         #TODO
         # Create session, do not use default CheckpointSaverHook
-        with tf.train.MonitoredTrainingSession(
-                checkpoint_dir=params.output, hooks=train_hooks,
-                save_checkpoint_secs=None, config=config) as sess:
-            # while not sess.should_stop():
-                # Bypass hook calls
-                utils.session_run(sess, zero_op)
-                for i in range(1, params.update_cycle):
-                    utils.session_run(sess, collect_op)
-                results_store_features = sess.run(store_feature)
-                results = sess.run(features)
-
-                print("===original features=====")
-                for k, v in results_store_features.items():
-                    print('-----------')
-                    print("key: ", k)
-                    print("value: ", v.tolist())
-
-                print("===print example one=====")
-                for k,v in results.items():
-                    print('-----------')
-                    print("key: ", k)
-                    print("value: ", v.tolist())
-
-
-        # # Create session, do not use default CheckpointSaverHook
         # with tf.train.MonitoredTrainingSession(
         #         checkpoint_dir=params.output, hooks=train_hooks,
         #         save_checkpoint_secs=None, config=config) as sess:
-        #     while not sess.should_stop():
+        #     # while not sess.should_stop():
         #         # Bypass hook calls
         #         utils.session_run(sess, zero_op)
         #         for i in range(1, params.update_cycle):
         #             utils.session_run(sess, collect_op)
-        #         sess.run(train_op)
+        #         results_store_features = sess.run(store_feature)
+        #         results = sess.run(features)
+        #
+        #         print("===original features=====")
+        #         for k, v in results_store_features.items():
+        #             print('-----------')
+        #             print("key: ", k)
+        #             print("value: ", v.tolist())
+        #
+        #         print("===print example one=====")
+        #         for k,v in results.items():
+        #             print('-----------')
+        #             print("key: ", k)
+        #             print("value: ", v.tolist())
+
+
+        # Create session, do not use default CheckpointSaverHook
+        with tf.train.MonitoredTrainingSession(
+                checkpoint_dir=params.output, hooks=train_hooks,
+                save_checkpoint_secs=None, config=config) as sess:
+            while not sess.should_stop():
+                # Bypass hook calls
+                utils.session_run(sess, zero_op)
+                for i in range(1, params.update_cycle):
+                    utils.session_run(sess, collect_op)
+                sess.run(train_op)
 
 
 if __name__ == "__main__":
