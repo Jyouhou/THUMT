@@ -436,13 +436,17 @@ def main(args):
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
                 save_checkpoint_secs=None, config=config) as sess:
-            while not sess.should_stop():
+            # while not sess.should_stop():
                 # Bypass hook calls
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
                 results = sess.run(features)
-                print(results)
+                print("===print example one=====")
+                for k,v in features.items():
+                    print("key: ", k)
+                    print("value: ", v)
+
 
         # # Create session, do not use default CheckpointSaverHook
         # with tf.train.MonitoredTrainingSession(
