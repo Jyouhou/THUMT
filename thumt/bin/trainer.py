@@ -311,7 +311,9 @@ def main(args):
             assert params.batch_size == 1
             features = mrt_utils.get_mrt_features(features, params, model)
 
-        with tf.Session() as sess:
+        #TODO
+        config = session_config(params)
+        with tf.Session(config=config) as sess:
             sess.run(tf.global_variables_initializer())
             features=sess.run(features)
             print(features)
