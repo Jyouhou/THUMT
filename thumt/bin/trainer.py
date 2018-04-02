@@ -445,9 +445,11 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
+                results_store_features = sess.run(store_feature)
                 results = sess.run(features)
+
                 print("===original features=====")
-                for k, v in store_feature.items():
+                for k, v in results_store_features.items():
                     print('-----------')
                     print("key: ", k)
                     print("value: ", v.tolist())
