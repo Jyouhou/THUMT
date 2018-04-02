@@ -307,10 +307,14 @@ def main(args):
         # Build model
         initializer = get_initializer(params)
         model = model_cls(params)
-
         if params.MRT:
             assert params.batch_size == 1
             features = mrt_utils.get_mrt_features(features, params, model)
+
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+            features=sess.run(features)
+            print(features)
 
         # Multi-GPU setting
         sharded_losses = parallel.parallel_model(
@@ -456,6 +460,6 @@ if __name__ == "__main__":
 #        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
 #        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
 #        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
-#        '--parameters', 'device_list=[0,2],train_steps=300000,MRT=True,batch_size=1']))
+#        '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1']))
 #
 # #['--foo', 'BAR']
