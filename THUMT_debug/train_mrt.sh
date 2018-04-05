@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-export PYTHONPATH=/home/rjq/project/THUMT_ruan:$PYTHONPATH
+export PYTHONPATH=/home/rjq/project/THUMT_ruan/THUMT_debug:$PYTHONPATH
 
 DATA=~/project/nist_thulac
 TRAIN=$DATA/train/
 VALID=$DATA/dev_test/nist06/
 
 
-python /home/rjq/project/THUMT_ruan/thumt/bin/trainer.py \
+python /home/rjq/project/THUMT_ruan/THUMT_debug/thumt/bin/trainer.py \
        --input ${TRAIN}train.zh.shuf ${TRAIN}train.en.shuf \
        --vocabulary ${TRAIN}vocab.zh.32k.txt ${TRAIN}vocab.en.32k.txt \
        --model RNNsearch \
