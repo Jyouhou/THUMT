@@ -56,7 +56,6 @@ def get_mrt_features(features, params, model):
     # Set target
     features["target"] = features["samples"]
     features["target_length"] = features["sample_length"]
-    print('after features', features)
     return features
 
 

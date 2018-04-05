@@ -393,15 +393,15 @@ def main(args):
         train_hooks = [
             tf.train.StopAtStepHook(last_step=params.train_steps),
             tf.train.NanTensorHook(loss),
-            tf.train.LoggingTensorHook(
-                {
-                    "step": global_step,
-                    "loss": loss,
-                    "source": tf.shape(features["source"]),
-                    "target": tf.shape(features["target"])
-                },
-                every_n_iter=1
-            ),
+            # tf.train.LoggingTensorHook(
+            #     {
+            #         "step": global_step,
+            #         "loss": loss,
+            #         "source": tf.shape(features["source"]),
+            #         "target": tf.shape(features["target"])
+            #     },
+            #     every_n_iter=1
+            # ),
             tf.train.CheckpointSaverHook(
                 checkpoint_dir=params.output,
                 save_secs=params.save_checkpoint_secs or None,
@@ -415,23 +415,23 @@ def main(args):
 
         config = session_config(params)
 
-        if eval_input_fn is not None:
-            train_hooks.append(
-                hooks.EvaluationHook(
-                    lambda f: search.create_inference_graph(
-                        model.get_evaluation_func(), f, params
-                    ),
-                    lambda: eval_input_fn(eval_inputs, params),
-                    lambda x: decode_target_ids(x, params),
-                    params.output,
-                    config,
-                    params.keep_top_checkpoint_max,
-                    eval_secs=params.eval_secs,
-                    eval_steps=params.eval_steps
-                )
-            )
+        # if eval_input_fn is not None:
+        #     train_hooks.append(
+        #         hooks.EvaluationHook(
+        #             lambda f: search.create_inference_graph(
+        #                 model.get_evaluation_func(), f, params
+        #             ),
+        #             lambda: eval_input_fn(eval_inputs, params),
+        #             lambda x: decode_target_ids(x, params),
+        #             params.output,
+        #             config,
+        #             params.keep_top_checkpoint_max,
+        #             eval_secs=params.eval_secs,
+        #             eval_steps=params.eval_steps
+        #         )
+        #     )
 
-        # Create session, do not use default CheckpointSaverHook
+        #TODO
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
                 save_checkpoint_secs=None, config=config) as sess:
@@ -440,21 +440,38 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
-                sess.run(train_op)
+                res = sess.run(features)
+                print("################# features #################")
+                for k,v in res.items():
+                    print("key: ", k)
+                    print("value", v)
+                x = input("input to go for next one")
 
 
-# if __name__ == "__main__":
-#     main(parse_args())
+        # # Create session, do not use default CheckpointSaverHook
+        # with tf.train.MonitoredTrainingSession(
+        #         checkpoint_dir=params.output, hooks=train_hooks,
+        #         save_checkpoint_secs=None, config=config) as sess:
+        #     while not sess.should_stop():
+        #         # Bypass hook calls
+        #         utils.session_run(sess, zero_op)
+        #         for i in range(1, params.update_cycle):
+        #             utils.session_run(sess, collect_op)
+        #         sess.run(train_op)
+
+
 if __name__ == "__main__":
-    main(parse_args(
-      ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
-       '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
-       '--model', 'RNNsearch',
-       '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
-       '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
-       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
-       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
-       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
-       '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1,mrt_sample=3']))
-
-#['--foo', 'BAR']
+    main(parse_args())
+# if __name__ == "__main__":
+#     main(parse_args(
+#       ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
+#        '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
+#        '--model', 'RNNsearch',
+#        '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
+#        '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
+#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
+#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
+#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
+#        '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1,mrt_sample=3']))
+#
+# #['--foo', 'BAR']
