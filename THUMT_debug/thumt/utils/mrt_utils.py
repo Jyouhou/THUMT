@@ -16,7 +16,7 @@ INF = 1. * 1e7
 def get_mrt_features(features, params, model):
     # Generate samples
     sample_x = parallel_model(lambda x: create_sampling_graph(model.get_inference_func(), x, params), features, params.device_list)
-    samples = tf.stack(sample_x,axis=0)
+    samples = tf.concat(sample_x,axis=0)
     print("sample_x" ,samples)
 
     # samples = create_sampling_graph(model.get_inference_func(), features,
