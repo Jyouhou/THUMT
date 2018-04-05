@@ -185,13 +185,14 @@ def model_graph(features, labels, params):
     src_vocab_size = len(params.vocabulary["source"])
     tgt_vocab_size = len(params.vocabulary["target"])
 
+    #TODO
     with tf.variable_scope("source_embedding",reuse=tf.AUTO_REUSE):
         src_emb = tf.get_variable("embedding",
                                   [src_vocab_size, params.embedding_size])
         src_bias = tf.get_variable("bias", [params.embedding_size])
         src_inputs = tf.nn.embedding_lookup(src_emb, features["source"])
 
-    with tf.variable_scope("target_embedding"):
+    with tf.variable_scope("target_embedding",reuse=tf.AUTO_REUSE):
         tgt_emb = tf.get_variable("embedding",
                                   [tgt_vocab_size, params.embedding_size])
         tgt_bias = tf.get_variable("bias", [params.embedding_size])
