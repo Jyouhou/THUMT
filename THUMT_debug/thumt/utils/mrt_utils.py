@@ -7,6 +7,7 @@ import numpy
 import json
 import math
 import thumt.utils.bleu as bleu
+from thumt.utils.parallel import parallel_model
 
 # Default value for INF
 INF = 1. * 1e7
@@ -14,6 +15,11 @@ INF = 1. * 1e7
 
 def get_mrt_features(features, params, model):
     # Generate samples
+    print("test")
+    sample_x = parallel_model(create_sampling_graph, features, params.device_list)
+    print(sample_x)
+
+
     samples = create_sampling_graph(model.get_inference_func(), features,
                                     params, training=True)
 
@@ -159,7 +165,7 @@ def create_sampling_graph(model_fns, features, params, training = False):
 
         for i, model_fn in enumerate(model_fns):
             results.append(model_fn(features, params_list[i]))
-            print("results", results)
+            print(res)
 
         return results
 
