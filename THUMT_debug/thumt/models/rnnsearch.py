@@ -380,9 +380,10 @@ class RNNsearch(interface.NMTModel):
                 params = copy.copy(params)
             params.dropout = 0.0
             params.use_variational_dropout = False
-            params.label_smoothing = 0.0
+            params.label_smoothing = 0.
 
-            with tf.variable_scope(self._scope):
+            #TODO
+            with tf.variable_scope(self._scope,reuse=tf.AUTO_REUSE):
                 logits = model_graph(features, None, params)
 
             return logits
