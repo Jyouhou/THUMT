@@ -54,8 +54,8 @@ def get_mrt_features(features, params, model):
     features["BLEU"].set_shape((None,))
     # Set target
     #TODO
-    # features["target"] = features["samples"]
-    # features["target_length"] = features["sample_length"]
+    features["target"] = features["samples"]
+    features["target_length"] = features["sample_length"]
     return features
 
 
