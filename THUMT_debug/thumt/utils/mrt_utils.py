@@ -220,6 +220,7 @@ def mrt_loss(features, params, ce, tgt_mask):
     logprobs -= tf.reduce_min(logprobs)
     probs = tf.exp(-logprobs)
     probs /= tf.reduce_sum(probs)
+    features['probs'] = probs
     ave_bleu = probs * features["BLEU"]
     loss = -tf.reduce_mean(ave_bleu)
 
