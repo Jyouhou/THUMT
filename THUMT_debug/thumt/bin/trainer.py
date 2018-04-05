@@ -98,7 +98,7 @@ def default_parameters():
         # MRT
         MRT=False,
         mrt_alpha=0.005,
-        mrt_sample=100,
+        mrt_sample=3,
         mrt_length_ratio=1.5,
         # focal
         FOCAL=False,
@@ -445,6 +445,7 @@ def main(args):
                 for k,v in res.items():
                     print("key: ", k)
                     print("value", v)
+                    print('------------------')
                 x = input("input to go for next one")
 
 

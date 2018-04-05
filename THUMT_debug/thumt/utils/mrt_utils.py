@@ -14,7 +14,6 @@ INF = 1. * 1e7
 
 def get_mrt_features(features, params, model):
     # Generate samples
-    print('before features', features)
     samples = create_sampling_graph(model.get_inference_func(), features,
                                     params, training=True)
 
@@ -54,9 +53,9 @@ def get_mrt_features(features, params, model):
                                  dtype=tf.float32)
     features["BLEU"].set_shape((None,))
     # Set target
-    features["target"] = features["samples"]
-    features["target_length"] = features["sample_length"]
-    print('after features', features)
+    #TODO
+    # features["target"] = features["samples"]
+    # features["target_length"] = features["sample_length"]
     return features
 
 
@@ -219,7 +218,7 @@ def mrt_loss(features, params, ce, tgt_mask):
     probs = tf.exp(-logprobs)
     probs /= tf.reduce_sum(probs)
     ave_bleu = probs * features["BLEU"]
-    loss = -tf.reduce_sum(ave_bleu)
+    loss = -tf.reduce_mean(ave_bleu)
 
     return loss
 
