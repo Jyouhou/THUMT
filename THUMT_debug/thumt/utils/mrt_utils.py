@@ -223,7 +223,7 @@ def mrt_loss(features, params, ce, tgt_mask):
     #TODO
     features['probs'] = probs
     ave_bleu = probs * features["BLEU"]
-    loss = -tf.reduce_mean(ave_bleu)
+    loss = -tf.reduce_sum(ave_bleu)
 
     return loss
 
