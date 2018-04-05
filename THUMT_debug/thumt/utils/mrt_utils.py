@@ -165,7 +165,8 @@ def create_sampling_graph(model_fns, features, params, training = False):
 
         for i, model_fn in enumerate(model_fns):
             results.append(model_fn(features, params_list[i]))
-            print(res)
+            #TODO
+            print(results)
 
         return results
 
