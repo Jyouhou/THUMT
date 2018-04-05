@@ -299,18 +299,10 @@ def main(args):
         if not params.record:
             # Build input queue
             features = dataset.get_training_input(params.input, params)
-            #TODO
-            # store_feature = {}
-            # for k,v in features.items():
-            #     store_feature[k] =v
         else:
             features = record.get_input_features(
                 os.path.join(params.record, "*train*"), "train", params
             )
-            #TODO
-            # store_feature = {}
-            # for k,v in features.items():
-            #     store_feature[k] =v
 
         # Build model
         initializer = get_initializer(params)
@@ -439,32 +431,6 @@ def main(args):
                 )
             )
 
-        #TODO
-        # Create session, do not use default CheckpointSaverHook
-        # with tf.train.MonitoredTrainingSession(
-        #         checkpoint_dir=params.output, hooks=train_hooks,
-        #         save_checkpoint_secs=None, config=config) as sess:
-        #     # while not sess.should_stop():
-        #         # Bypass hook calls
-        #         utils.session_run(sess, zero_op)
-        #         for i in range(1, params.update_cycle):
-        #             utils.session_run(sess, collect_op)
-        #         results_store_features = sess.run(store_feature)
-        #         results = sess.run(features)
-        #
-        #         print("===original features=====")
-        #         for k, v in results_store_features.items():
-        #             print('-----------')
-        #             print("key: ", k)
-        #             print("value: ", v.tolist())
-        #
-        #         print("===print example one=====")
-        #         for k,v in results.items():
-        #             print('-----------')
-        #             print("key: ", k)
-        #             print("value: ", v.tolist())
-
-
         # Create session, do not use default CheckpointSaverHook
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
@@ -477,18 +443,18 @@ def main(args):
                 sess.run(train_op)
 
 
-if __name__ == "__main__":
-    main(parse_args())
 # if __name__ == "__main__":
-#     main(parse_args(
-#       ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
-#        '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
-#        '--model', 'RNNsearch',
-#        '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
-#        '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
-#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
-#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
-#        '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
-#        '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1,mrt_sample=3']))
-#
-# #['--foo', 'BAR']
+#     main(parse_args())
+if __name__ == "__main__":
+    main(parse_args(
+      ['--input', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.zh.shuf','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/train.en.shuf',
+       '--vocabulary', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.zh.32k.txt','/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/train/vocab.en.32k.txt',
+       '--model', 'RNNsearch',
+       '--validation', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.cn',
+       '--references', '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en0',
+       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en1',
+       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en2',
+       '/Users/ruanjiaqiang/Desktop/programing/python/nist_thulac/dev_test/nist06/nist06.en3',
+       '--parameters', 'device_list=[0],train_steps=300000,MRT=True,batch_size=1,mrt_sample=3']))
+
+#['--foo', 'BAR']

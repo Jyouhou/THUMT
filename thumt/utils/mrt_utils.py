@@ -54,9 +54,6 @@ def get_mrt_features(features, params, model):
                                  dtype=tf.float32)
     features["BLEU"].set_shape((None,))
     # Set target
-    #TODO
-    # features["origin_target"]=features["target"]
-    # features["origin_target_len"]=features["target_length"]
     features["target"] = features["samples"]
     features["target_length"] = features["sample_length"]
     print('after features', features)
@@ -89,7 +86,6 @@ def get_unique(sens, eos):
 
 def get_len(sen, eos):
     indices = tf.where(tf.equal(sen, eos))
-    #TODO
     result = tf.segment_min(indices[:,1], indices[:,0])+1
     return result
 

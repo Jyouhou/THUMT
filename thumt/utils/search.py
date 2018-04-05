@@ -73,13 +73,9 @@ def compute_topk_scores_and_seq(sequences, scores, scores_to_gather, flags,
     top_coordinates = tf.stack([batch_pos, topk_indexes], axis=2)
 
     # Gather up the highest scoring sequences
-    #TODO
-    print('top_cord', top_coordinates.shape)
-    print('sequences', sequences.shape)
     topk_seq = tf.gather_nd(sequences, top_coordinates)
     topk_flags = tf.gather_nd(flags, top_coordinates)
     topk_gathered_scores = tf.gather_nd(scores_to_gather, top_coordinates)
-    print('topk_seq', topk_seq.shape)
 
     return topk_seq, topk_gathered_scores, topk_flags
 
@@ -398,12 +394,6 @@ def beam_search(symbols_to_logits_fn, initial_ids, beam_size, decode_length,
         return tf.logical_and(tf.less(i, decode_length),
                               tf.logical_not(bound_is_met))
 
-    #TODO
-    print('alive_seq', alive_seq.shape)
-    print('alive_log_probs', alive_log_probs.shape)
-    print('finished_seq', finished_seq.shape)
-    print('finished_scores', finished_scores.shape)
-    print('finished_flags', finished_flags.shape)
     (_, alive_seq, alive_log_probs, finished_seq, finished_scores,
      finished_flags) = tf.while_loop(
         _is_finished,
@@ -459,9 +449,6 @@ def create_inference_graph(model_fns, features, params):
         features["target_length"] = tf.fill([tf.shape(features["target"])[0]],
                                             tf.shape(features["target"])[1])
 
-        #TODO
-        print('target', features["target"].shape)
-        print('target_len', features['target_length'].shape)
         results = []
 
         for i, model_fn in enumerate(model_fns):
@@ -501,8 +488,6 @@ def create_inference_graph(model_fns, features, params):
     # Setting decode length to input length + decode_length
     decode_length = tf.shape(features["source"])[1] + decode_length
 
-    #TODO
-    print('initial_ids', initial_ids.shape)
     ids, scores = beam_search(symbols_to_logits_fn, initial_ids,
                               beam_size, decode_length, vocab_size,
                               alpha,
