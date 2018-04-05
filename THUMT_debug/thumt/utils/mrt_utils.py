@@ -111,6 +111,8 @@ def sampler(symbols_to_logits_fn, initial_ids, sample_num, decode_length,
         return i < decode_length
 
     def inner_loop(i, alive_seq):
+        #TODO
+        print("alive_seq", alive_seq)
         logit = symbols_to_logits_fn(alive_seq)[0]
         new_samples = tf.multinomial(logit, 1)
         new_samples = tf.to_int32(new_samples)
@@ -157,6 +159,7 @@ def create_sampling_graph(model_fns, features, params, training = False):
 
         for i, model_fn in enumerate(model_fns):
             results.append(model_fn(features, params_list[i]))
+            print("results", results)
 
         return results
 
