@@ -464,7 +464,7 @@ def main(args):
                     print('------------------')
                 # x = input("input to go for next one")
                 count += 1
-                if count == x:
+                if count == int(x):
                     break
 
         # # Create session, do not use default CheckpointSaverHook
