@@ -303,98 +303,97 @@ def main(args):
             features = record.get_input_features(
                 os.path.join(params.record, "*train*"), "train", params
             )
-        #TODO
-        jump_feats = features
 
-        # Build model
-        initializer = get_initializer(params)
-        model = model_cls(params)
-        if params.MRT:
-            assert params.batch_size == 1
-            features = mrt_utils.get_mrt_features(features, params, model)
 
-        # Multi-GPU setting
-        sharded_losses = parallel.parallel_model(
-            model.get_training_func(initializer),
-            features,
-            params.device_list
-        )
-        loss = tf.add_n(sharded_losses) / len(sharded_losses)
-
-        # Create global step
-        global_step = tf.train.get_or_create_global_step()
-
-        # Print parameters
-        all_weights = {v.name: v for v in tf.trainable_variables()}
-        total_size = 0
-
-        for v_name in sorted(list(all_weights)):
-            v = all_weights[v_name]
-            tf.logging.info("%s\tshape    %s", v.name[:-2].ljust(80),
-                            str(v.shape).ljust(20))
-            v_size = np.prod(np.array(v.shape.as_list())).tolist()
-            total_size += v_size
-        tf.logging.info("Total trainable variables size: %d", total_size)
-
-        learning_rate = get_learning_rate_decay(params.learning_rate,
-                                                global_step, params)
-        learning_rate = tf.convert_to_tensor(learning_rate, dtype=tf.float32)
-        tf.summary.scalar("learning_rate", learning_rate)
-
-        # Create optimizer
-        opt = tf.train.AdamOptimizer(learning_rate,
-                                     beta1=params.adam_beta1,
-                                     beta2=params.adam_beta2,
-                                     epsilon=params.adam_epsilon)
-
-        if params.update_cycle == 1:
-            train_op = tf.contrib.layers.optimize_loss(
-                name="training",
-                loss=loss,
-                global_step=global_step,
-                learning_rate=learning_rate,
-                clip_gradients=params.clip_grad_norm or None,
-                optimizer=opt,
-                colocate_gradients_with_ops=True
-            )
-            zero_op = tf.no_op("zero_op")
-            collect_op = tf.no_op("collect_op")
-        else:
-            grads_and_vars = opt.compute_gradients(
-                loss, colocate_gradients_with_ops=True)
-            gradients = [item[0] for item in grads_and_vars]
-            variables = [item[1] for item in grads_and_vars]
-
-            variables = utils.replicate_variables(variables)
-            zero_op = utils.zero_variables(variables)
-            collect_op = utils.collect_gradients(gradients, variables)
-
-            scale = 1.0 / params.update_cycle
-            gradients = utils.scale_gradients(variables, scale)
-
-            # Gradient clipping
-            if isinstance(params.clip_grad_norm or None, float):
-                gradients, _ = tf.clip_by_global_norm(gradients,
-                                                      params.clip_grad_norm)
-
-            # Update variables
-            grads_and_vars = list(zip(gradients, tf.trainable_variables()))
-
-            with tf.control_dependencies([collect_op]):
-                train_op = opt.apply_gradients(grads_and_vars, global_step)
-
-        # Validation
-        if params.validation and params.references[0]:
-            files = [params.validation] + list(params.references)
-            eval_inputs = dataset.sort_and_zip_files(files)
-            eval_input_fn = dataset.get_evaluation_input
-        else:
-            eval_input_fn = None
+        # # Build model
+        # initializer = get_initializer(params)
+        # model = model_cls(params)
+        # if params.MRT:
+        #     assert params.batch_size == 1
+        #     features = mrt_utils.get_mrt_features(features, params, model)
+        #
+        # # Multi-GPU setting
+        # sharded_losses = parallel.parallel_model(
+        #     model.get_training_func(initializer),
+        #     features,
+        #     params.device_list
+        # )
+        # loss = tf.add_n(sharded_losses) / len(sharded_losses)
+        #
+        # # Create global step
+        # global_step = tf.train.get_or_create_global_step()
+        #
+        # # Print parameters
+        # all_weights = {v.name: v for v in tf.trainable_variables()}
+        # total_size = 0
+        #
+        # for v_name in sorted(list(all_weights)):
+        #     v = all_weights[v_name]
+        #     tf.logging.info("%s\tshape    %s", v.name[:-2].ljust(80),
+        #                     str(v.shape).ljust(20))
+        #     v_size = np.prod(np.array(v.shape.as_list())).tolist()
+        #     total_size += v_size
+        # tf.logging.info("Total trainable variables size: %d", total_size)
+        #
+        # learning_rate = get_learning_rate_decay(params.learning_rate,
+        #                                         global_step, params)
+        # learning_rate = tf.convert_to_tensor(learning_rate, dtype=tf.float32)
+        # tf.summary.scalar("learning_rate", learning_rate)
+        #
+        # # Create optimizer
+        # opt = tf.train.AdamOptimizer(learning_rate,
+        #                              beta1=params.adam_beta1,
+        #                              beta2=params.adam_beta2,
+        #                              epsilon=params.adam_epsilon)
+        #
+        # if params.update_cycle == 1:
+        #     train_op = tf.contrib.layers.optimize_loss(
+        #         name="training",
+        #         loss=loss,
+        #         global_step=global_step,
+        #         learning_rate=learning_rate,
+        #         clip_gradients=params.clip_grad_norm or None,
+        #         optimizer=opt,
+        #         colocate_gradients_with_ops=True
+        #     )
+        #     zero_op = tf.no_op("zero_op")
+        #     collect_op = tf.no_op("collect_op")
+        # else:
+        #     grads_and_vars = opt.compute_gradients(
+        #         loss, colocate_gradients_with_ops=True)
+        #     gradients = [item[0] for item in grads_and_vars]
+        #     variables = [item[1] for item in grads_and_vars]
+        #
+        #     variables = utils.replicate_variables(variables)
+        #     zero_op = utils.zero_variables(variables)
+        #     collect_op = utils.collect_gradients(gradients, variables)
+        #
+        #     scale = 1.0 / params.update_cycle
+        #     gradients = utils.scale_gradients(variables, scale)
+        #
+        #     # Gradient clipping
+        #     if isinstance(params.clip_grad_norm or None, float):
+        #         gradients, _ = tf.clip_by_global_norm(gradients,
+        #                                               params.clip_grad_norm)
+        #
+        #     # Update variables
+        #     grads_and_vars = list(zip(gradients, tf.trainable_variables()))
+        #
+        #     with tf.control_dependencies([collect_op]):
+        #         train_op = opt.apply_gradients(grads_and_vars, global_step)
+        #
+        # # Validation
+        # if params.validation and params.references[0]:
+        #     files = [params.validation] + list(params.references)
+        #     eval_inputs = dataset.sort_and_zip_files(files)
+        #     eval_input_fn = dataset.get_evaluation_input
+        # else:
+        #     eval_input_fn = None
 
         # Add hooks
         train_hooks = [
             tf.train.StopAtStepHook(last_step=params.train_steps),
-            tf.train.NanTensorHook(loss),
+            # tf.train.NanTensorHook(loss),
             # tf.train.LoggingTensorHook(
             #     {
             #         "step": global_step,
@@ -450,11 +449,11 @@ def main(args):
                 save_checkpoint_secs=None, config=config) as sess:
             while not sess.should_stop():
                 # Bypass hook calls
-                utils.session_run(sess, zero_op)
-                for i in range(1, params.update_cycle):
-                    utils.session_run(sess, collect_op)
+                # utils.session_run(sess, zero_op)
+                # for i in range(1, params.update_cycle):
+                #     utils.session_run(sess, collect_op)
 
-                res = sess.run(jump_feats)
+                res = sess.run(features)
                 print("################# features #################")
                 print("count", count)
                 for k,v in res.items():
