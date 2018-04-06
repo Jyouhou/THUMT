@@ -445,7 +445,7 @@ def main(args):
         # features.pop('target_length')
 
         with tf.train.MonitoredTrainingSession(
-                checkpoint_dir=params.output, hooks=train_hooks,
+                # checkpoint_dir=params.output, hooks=train_hooks,
                 save_checkpoint_secs=None, config=config) as sess:
             while not sess.should_stop():
                 # Bypass hook calls
