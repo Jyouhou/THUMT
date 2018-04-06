@@ -441,13 +441,13 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
-                features['samples']=None
-                features['sample_length']=None
-                features['BLEU']=None
-                features['target']=None
-                features['source_length']=None
-                features['ce']=None
-                features['tgt_mask']=None
+                features['samples']=0
+                features['sample_length']=0
+                features['BLEU']=0
+                features['target']=0
+                features['source_length']=0
+                features['ce']=0
+                features['tgt_mask']=0
 
                 res = sess.run(features)
                 print("################# features #################")
