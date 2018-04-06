@@ -448,7 +448,7 @@ def main(args):
                 # checkpoint_dir=params.output, hooks=train_hooks,
                 # save_checkpoint_secs=None, config=config) as sess:
         x = input("run times")
-        with tf.train.MonitoredSession(config=session_config(params)) as sess:
+        with tf.train.MonitoredTrainingSession(config=session_config(params)) as sess:
             while not sess.should_stop():
                 # Bypass hook calls
                 # utils.session_run(sess, zero_op)
