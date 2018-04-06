@@ -303,6 +303,8 @@ def main(args):
             features = record.get_input_features(
                 os.path.join(params.record, "*train*"), "train", params
             )
+        #TODO
+        jump_feats = features
 
         # Build model
         initializer = get_initializer(params)
@@ -433,15 +435,15 @@ def main(args):
 
         #TODO
         count = 0
-        features.pop('samples')
-        features.pop('sample_length')
-        features.pop('BLEU')
-        features.pop('target')
-        features.pop('source_length')
-        features.pop('ce')
-        features.pop('tgt_mask')
-        features.pop('probs')
-        features.pop('target_length')
+        # features.pop('samples')
+        # features.pop('sample_length')
+        # features.pop('BLEU')
+        # features.pop('target')
+        # features.pop('source_length')
+        # features.pop('ce')
+        # features.pop('tgt_mask')
+        # features.pop('probs')
+        # features.pop('target_length')
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
@@ -452,7 +454,7 @@ def main(args):
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
 
-                res = sess.run(features)
+                res = sess.run(jump_feats)
                 print("################# features #################")
                 print("count", count)
                 for k,v in res.items():
