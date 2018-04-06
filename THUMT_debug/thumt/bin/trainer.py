@@ -440,6 +440,7 @@ def main(args):
         features.pop('source_length')
         features.pop('ce')
         features.pop('tgt_mask')
+        features.pop('probs')
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
