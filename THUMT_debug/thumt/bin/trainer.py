@@ -447,6 +447,7 @@ def main(args):
         # with tf.train.MonitoredTrainingSession(
                 # checkpoint_dir=params.output, hooks=train_hooks,
                 # save_checkpoint_secs=None, config=config) as sess:
+        x = input("run times")
         with tf.train.MonitoredSession(config=session_config(params)) as sess:
             while not sess.should_stop():
                 # Bypass hook calls
@@ -463,6 +464,8 @@ def main(args):
                     print('------------------')
                 # x = input("input to go for next one")
                 count += 1
+                if count == x:
+                    break
 
         # # Create session, do not use default CheckpointSaverHook
         # with tf.train.MonitoredTrainingSession(
