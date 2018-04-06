@@ -432,6 +432,7 @@ def main(args):
         #     )
 
         #TODO
+        count = 0
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
                 save_checkpoint_secs=None, config=config) as sess:
@@ -440,14 +441,23 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
+                features['samples']=None
+                features['sample_length']=None
+                features['BLEU']=None
+                features['target']=None
+                features['source_length']=None
+                features['ce']=None
+                features['tgt_mask']=None
+
                 res = sess.run(features)
                 print("################# features #################")
                 for k,v in res.items():
+                    print("count", count)
                     print("key: ", k)
                     print("value", v)
                     print('------------------')
-                x = input("input to go for next one")
-
+                # x = input("input to go for next one")
+                count += 1
 
         # # Create session, do not use default CheckpointSaverHook
         # with tf.train.MonitoredTrainingSession(
