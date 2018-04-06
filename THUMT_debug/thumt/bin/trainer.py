@@ -441,13 +441,13 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
-                features['samples']=0
-                features['sample_length']=0
-                features['BLEU']=0
-                features['target']=0
-                features['source_length']=0
-                features['ce']=0
-                features['tgt_mask']=0
+                features.pop('samples')
+                features.pop('sample_length')
+                features.pop('BLEU')
+                features.pop('target')
+                features.pop('source_length')
+                features.pop('ce')
+                features.pop('tgt_mask')
 
                 res = sess.run(features)
                 print("################# features #################")
