@@ -433,6 +433,14 @@ def main(args):
 
         #TODO
         count = 0
+        features.pop('samples')
+        features.pop('sample_length')
+        features.pop('BLEU')
+        features.pop('target')
+        features.pop('source_length')
+        features.pop('ce')
+        features.pop('tgt_mask')
+
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=params.output, hooks=train_hooks,
                 save_checkpoint_secs=None, config=config) as sess:
@@ -441,18 +449,11 @@ def main(args):
                 utils.session_run(sess, zero_op)
                 for i in range(1, params.update_cycle):
                     utils.session_run(sess, collect_op)
-                features.pop('samples')
-                features.pop('sample_length')
-                features.pop('BLEU')
-                features.pop('target')
-                features.pop('source_length')
-                features.pop('ce')
-                features.pop('tgt_mask')
 
                 res = sess.run(features)
                 print("################# features #################")
+                print("count", count)
                 for k,v in res.items():
-                    print("count", count)
                     print("key: ", k)
                     print("value", v)
                     print('------------------')
