@@ -96,7 +96,8 @@ def get_training_input(filenames, params):
 
         dataset = tf.data.Dataset.zip((src_dataset, tgt_dataset))
         dataset = dataset.shuffle(params.buffer_size)
-        # dataset = dataset.repeat()
+        #TODO
+        dataset = dataset.repeat()
 
         # Split string
         dataset = dataset.map(

@@ -462,7 +462,7 @@ def main(args):
                     print("key: ", k)
                     print("value", v)
                     print('------------------')
-                # x = input("input to go for next one")
+                x = input("input to go for next one")
                 count += 1
                 if count == int(x):
                     break
