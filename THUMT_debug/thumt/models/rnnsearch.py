@@ -186,14 +186,13 @@ class RNNsearch(interface.NMTModel):
         src_vocab_size = len(params.vocabulary["source"])
         tgt_vocab_size = len(params.vocabulary["target"])
 
-        #TODO
-        with tf.variable_scope("source_embedding",reuse=tf.AUTO_REUSE):
+        with tf.variable_scope("source_embedding"):
             src_emb = tf.get_variable("embedding",
                                       [src_vocab_size, params.embedding_size])
             src_bias = tf.get_variable("bias", [params.embedding_size])
             src_inputs = tf.nn.embedding_lookup(src_emb, features["source"])
 
-        with tf.variable_scope("target_embedding",reuse=tf.AUTO_REUSE):
+        with tf.variable_scope("target_embedding"):
             tgt_emb = tf.get_variable("embedding",
                                       [tgt_vocab_size, params.embedding_size])
             tgt_bias = tf.get_variable("bias", [params.embedding_size])
@@ -276,7 +275,7 @@ class RNNsearch(interface.NMTModel):
         ]
         maxout_size = params.hidden_size // params.maxnum
 
-        if True:
+        if not params.MRT:
             if labels is None:
                 # Special case for non-incremental decoding
                 maxout_features = [
@@ -304,21 +303,29 @@ class RNNsearch(interface.NMTModel):
                 readout = tf.nn.dropout(readout, 1.0 - params.dropout)
 
             # Prediction
-            if self.logits == None:
-                logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
-                                          scope="softmax")
-                self.logits = logits
-
-            logits = self.logits
-
+            logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
+                                      scope="softmax")
             logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
-            ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
-                logits=logits,
-                labels=labels,
-                smoothing=params.label_smoothing,
-                normalize=True
-            )
+            # global_step = tf.train.get_or_create_global_step()
+            if params.FOCAL:
+                pass
+                # ce = tf.where(global_step>params.focal_from,
+                #               focal_loss(logits,labels),
+                #               layers.nn.smoothed_softmax_cross_entropy_with_logits(
+                #                   logits=logits,
+                #                   labels=labels,
+                #                   smoothing=params.label_smoothing,
+                #                   normalize=True
+                #               ))
+                # ce = focal_loss(logits,labels)
+            else:
+                ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
+                    logits=logits,
+                    labels=labels,
+                    smoothing=params.label_smoothing,
+                    normalize=True
+                )
 
             ce = tf.reshape(ce, tf.shape(labels))
             tgt_mask = tf.to_float(
@@ -333,7 +340,7 @@ class RNNsearch(interface.NMTModel):
 
             return loss
         elif params.MRT:
-            # if labels is None and params.mrt_is_train:
+            # if labels is None:
             #     # Special case for non-incremental decoding
             #     maxout_features = [
             #         shifted_tgt_inputs[:, -1, :],
@@ -348,22 +355,7 @@ class RNNsearch(interface.NMTModel):
             #     # Prediction
             #     logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
             #                               scope="softmax")
-            #     self.logits = logits
-            #     return logits
-            # elif labels is None and not params.mrt_is_train:
-            #     maxout_features = [
-            #         shifted_tgt_inputs[:, -1, :],
-            #         shifted_outputs[:, -1, :],
-            #         decoder_output["values"][:, -1, :]
-            #     ]
-            #     maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
-            #                               concat=False)
-            #     readout = layers.nn.linear(maxhid, params.embedding_size, False,
-            #                                False, scope="deepout")
             #
-            #     # Prediction
-            #     logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
-            #                               scope="softmax")
             #     return logits
 
             maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
@@ -375,24 +367,36 @@ class RNNsearch(interface.NMTModel):
                 readout = tf.nn.dropout(readout, 1.0 - params.dropout)
 
             # Prediction
-            if self.logits == None:
+            if self.logits == None
                 logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                                           scope="softmax")
                 self.logits = logits
-            else:
-                logits = self.logits
 
+            logits = self.logits
             if labels is None:
                 return logits
 
             logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
-            ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
-                logits=logits,
-                labels=labels,
-                smoothing=params.label_smoothing,
-                normalize=True
-            )
+            # global_step = tf.train.get_or_create_global_step()
+            if params.FOCAL:
+                pass
+                # ce = tf.where(global_step>params.focal_from,
+                #               focal_loss(logits,labels),
+                #               layers.nn.smoothed_softmax_cross_entropy_with_logits(
+                #                   logits=logits,
+                #                   labels=labels,
+                #                   smoothing=params.label_smoothing,
+                #                   normalize=True
+                #               ))
+                # ce = focal_loss(logits,labels)
+            else:
+                ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
+                    logits=logits,
+                    labels=labels,
+                    smoothing=params.label_smoothing,
+                    normalize=True
+                )
 
             ce = tf.reshape(ce, tf.shape(labels))
             tgt_mask = tf.to_float(
