@@ -275,7 +275,7 @@ class RNNsearch(interface.NMTModel):
         ]
         maxout_size = params.hidden_size // params.maxnum
 
-        if labels is None:
+        if labels is None and not params.MRT:
             # Special case for non-incremental decoding
             maxout_features = [
                 shifted_tgt_inputs[:, -1, :],
@@ -306,6 +306,8 @@ class RNNsearch(interface.NMTModel):
                                   scope="softmax")
         logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
+        if labels is None and params.MRT:
+            return logits
         # logits = self.logits
         ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
             logits=logits,
