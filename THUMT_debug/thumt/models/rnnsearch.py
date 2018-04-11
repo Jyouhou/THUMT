@@ -306,11 +306,11 @@ class RNNsearch(interface.NMTModel):
         # Prediction
         logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                                   scope="softmax")
-        logits = tf.reshape(logits, [-1, tgt_vocab_size])
         print("=========debug for mrt===========")
         print("logits2", logits)
         if labels is None and params.MRT:
             return logits
+        logits = tf.reshape(logits, [-1, tgt_vocab_size])
         # logits = self.logits
         ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
             logits=logits,
