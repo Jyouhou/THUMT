@@ -122,6 +122,9 @@ def sampler(symbols_to_logits_fn, initial_ids, sample_num, decode_length,
         logit = symbols_to_logits_fn(alive_seq)[0]
         new_samples = tf.multinomial(logit, 1)
         new_samples = tf.to_int32(new_samples)
+        print("======debug for mrt==========")
+        print("alive_seq", alive_seq)
+        print("new_samples", new_samples)
         alive_seq = tf.concat([alive_seq, new_samples], 1)
         return (i + 1, alive_seq)
 
