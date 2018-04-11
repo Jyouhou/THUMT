@@ -127,7 +127,10 @@ def smoothed_softmax_cross_entropy_with_logits(**kwargs):
     if logits is None or labels is None:
         raise ValueError("Both logits and labels must be provided")
 
-    with tf.name_scope(scope or "smoothed_softmax_cross_entropy_with_logits",
+    #TODO
+    # with tf.name_scope(scope or "smoothed_softmax_cross_entropy_with_logits",
+    #                    values=[logits, labels]):
+    with tf.name_scope("smoothed_softmax_cross_entropy_with_logits",
                        values=[logits, labels]):
 
         labels = tf.reshape(labels, [-1])
