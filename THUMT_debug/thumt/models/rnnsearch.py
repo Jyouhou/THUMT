@@ -367,7 +367,7 @@ class RNNsearch(interface.NMTModel):
                 readout = tf.nn.dropout(readout, 1.0 - params.dropout)
 
             # Prediction
-            if self.logits == None
+            if self.logits is None:
                 logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                                           scope="softmax")
                 self.logits = logits
