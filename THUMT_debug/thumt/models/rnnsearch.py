@@ -291,7 +291,8 @@ class RNNsearch(interface.NMTModel):
             # Prediction
             logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                                       scope="softmax")
-            self.logits = logits
+            print("=========debug for mrt===========")
+            print("logits1", logits)
             return logits
 
         maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
@@ -306,7 +307,8 @@ class RNNsearch(interface.NMTModel):
         logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
                                   scope="softmax")
         logits = tf.reshape(logits, [-1, tgt_vocab_size])
-
+        print("=========debug for mrt===========")
+        print("logits2", logits)
         if labels is None and params.MRT:
             return logits
         # logits = self.logits
