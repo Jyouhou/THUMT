@@ -276,7 +276,7 @@ class RNNsearch(interface.NMTModel):
         ]
         maxout_size = params.hidden_size // params.maxnum
 
-        if not params.MRT:
+        if True:
             if labels is None:
                 # Special case for non-incremental decoding
                 maxout_features = [
