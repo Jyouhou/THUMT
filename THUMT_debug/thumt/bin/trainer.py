@@ -100,6 +100,7 @@ def default_parameters():
         mrt_alpha=0.005,
         mrt_sample=3,
         mrt_length_ratio=1.5,
+        mrt_is_train = True,
         # focal
         FOCAL=False,
         focal_from=80000,
