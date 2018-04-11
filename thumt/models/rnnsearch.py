@@ -305,25 +305,12 @@ def model_graph(features, labels, params):
                               scope="softmax")
     logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
-    # global_step = tf.train.get_or_create_global_step()
-    if params.FOCAL:
-        pass
-        # ce = tf.where(global_step>params.focal_from,
-        #               focal_loss(logits,labels),
-        #               layers.nn.smoothed_softmax_cross_entropy_with_logits(
-        #                   logits=logits,
-        #                   labels=labels,
-        #                   smoothing=params.label_smoothing,
-        #                   normalize=True
-        #               ))
-        # ce = focal_loss(logits,labels)
-    else:
-        ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
-            logits=logits,
-            labels=labels,
-            smoothing=params.label_smoothing,
-            normalize=True
-        )
+    ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
+        logits=logits,
+        labels=labels,
+        smoothing=params.label_smoothing,
+        normalize=True
+    )
 
     ce = tf.reshape(ce, tf.shape(labels))
     tgt_mask = tf.to_float(
