@@ -404,9 +404,6 @@ class RNNsearch(interface.NMTModel):
 
             return loss
 
-
-
-
     def __init__(self, params, scope="rnnsearch"):
         super(RNNsearch, self).__init__(params=params, scope=scope)
         self.logits = None

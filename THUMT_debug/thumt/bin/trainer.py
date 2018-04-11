@@ -394,16 +394,16 @@ def main(args):
         # Add hooks
         train_hooks = [
             tf.train.StopAtStepHook(last_step=params.train_steps),
-            # tf.train.NanTensorHook(loss),
-            # tf.train.LoggingTensorHook(
-            #     {
-            #         "step": global_step,
-            #         "loss": loss,
-            #         "source": tf.shape(features["source"]),
-            #         "target": tf.shape(features["target"])
-            #     },
-            #     every_n_iter=1
-            # ),
+            tf.train.NanTensorHook(loss),
+            tf.train.LoggingTensorHook(
+                {
+                    "step": global_step,
+                    "loss": loss,
+                    "source": tf.shape(features["source"]),
+                    "target": tf.shape(features["target"])
+                },
+                every_n_iter=1
+            ),
             tf.train.CheckpointSaverHook(
                 checkpoint_dir=params.output,
                 save_secs=params.save_checkpoint_secs or None,
@@ -434,50 +434,40 @@ def main(args):
             )
 
         #TODO
-        count = 0
-        # features.pop('samples')
-        # features.pop('sample_length')
-        # features.pop('BLEU')
-        # features.pop('target')
-        # features.pop('source_length')
-        # features.pop('ce')
-        # features.pop('tgt_mask')
-        # features.pop('probs')
-        # features.pop('target_length')
-
-        x = input("run times")
-        with tf.train.MonitoredTrainingSession(
-                checkpoint_dir=params.output, hooks=train_hooks,
-                save_checkpoint_secs=None, config=config) as sess:
-        # with tf.train.MonitoredTrainingSession(config=session_config(params)) as sess:
-            while not sess.should_stop():
-                # Bypass hook calls
-                # utils.session_run(sess, zero_op)
-                # for i in range(1, params.update_cycle):
-                #     utils.session_run(sess, collect_op)
-
-                res = sess.run(features)
-                print("################# features #################")
-                print("count", count)
-                for k,v in res.items():
-                    print("key: ", k)
-                    print("value", v)
-                    print('------------------')
-                x = input("input to go for next one")
-                count += 1
-                # if count == int(x):
-                #     break
-
-        # # Create session, do not use default CheckpointSaverHook
+        # count =0
+        # x = input("run times")
         # with tf.train.MonitoredTrainingSession(
         #         checkpoint_dir=params.output, hooks=train_hooks,
         #         save_checkpoint_secs=None, config=config) as sess:
+        # # with tf.train.MonitoredTrainingSession(config=session_config(params)) as sess:
         #     while not sess.should_stop():
         #         # Bypass hook calls
-        #         utils.session_run(sess, zero_op)
-        #         for i in range(1, params.update_cycle):
-        #             utils.session_run(sess, collect_op)
-        #         sess.run(train_op)
+        #         # utils.session_run(sess, zero_op)
+        #         # for i in range(1, params.update_cycle):
+        #         #     utils.session_run(sess, collect_op)
+        #
+        #         res = sess.run(features)
+        #         print("################# features #################")
+        #         print("count", count)
+        #         for k,v in res.items():
+        #             print("key: ", k)
+        #             print("value", v)
+        #             print('------------------')
+        #         x = input("input to go for next one")
+        #         count += 1
+        #         # if count == int(x):
+        #         #     break
+
+        # Create session, do not use default CheckpointSaverHook
+        with tf.train.MonitoredTrainingSession(
+                checkpoint_dir=params.output, hooks=train_hooks,
+                save_checkpoint_secs=None, config=config) as sess:
+            while not sess.should_stop():
+                # Bypass hook calls
+                utils.session_run(sess, zero_op)
+                for i in range(1, params.update_cycle):
+                    utils.session_run(sess, collect_op)
+                sess.run(train_op)
 
 
 if __name__ == "__main__":
