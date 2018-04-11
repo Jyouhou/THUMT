@@ -337,7 +337,7 @@ class RNNsearch(interface.NMTModel):
             if params is None:
                 params = self.parameters
             with tf.variable_scope(self._scope, initializer=initializer,
-                                   reuse=tf.AUTO_REUSE):
+                                   reuse=True):
                 loss = self.model_graph(features, features["target"], params)
                 return loss
 
