@@ -333,38 +333,38 @@ class RNNsearch(interface.NMTModel):
 
             return loss
         elif params.MRT:
-            if labels is None and params.mrt_is_train:
-                # Special case for non-incremental decoding
-                maxout_features = [
-                    shifted_tgt_inputs[:, -1, :],
-                    shifted_outputs[:, -1, :],
-                    decoder_output["values"][:, -1, :]
-                ]
-                maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
-                                          concat=False)
-                readout = layers.nn.linear(maxhid, params.embedding_size, False,
-                                           False, scope="deepout")
-
-                # Prediction
-                logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
-                                          scope="softmax")
-                self.logits = logits
-                return logits
-            elif labels is None and not params.mrt_is_train:
-                maxout_features = [
-                    shifted_tgt_inputs[:, -1, :],
-                    shifted_outputs[:, -1, :],
-                    decoder_output["values"][:, -1, :]
-                ]
-                maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
-                                          concat=False)
-                readout = layers.nn.linear(maxhid, params.embedding_size, False,
-                                           False, scope="deepout")
-
-                # Prediction
-                logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
-                                          scope="softmax")
-                return logits
+            # if labels is None and params.mrt_is_train:
+            #     # Special case for non-incremental decoding
+            #     maxout_features = [
+            #         shifted_tgt_inputs[:, -1, :],
+            #         shifted_outputs[:, -1, :],
+            #         decoder_output["values"][:, -1, :]
+            #     ]
+            #     maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
+            #                               concat=False)
+            #     readout = layers.nn.linear(maxhid, params.embedding_size, False,
+            #                                False, scope="deepout")
+            #
+            #     # Prediction
+            #     logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
+            #                               scope="softmax")
+            #     self.logits = logits
+            #     return logits
+            # elif labels is None and not params.mrt_is_train:
+            #     maxout_features = [
+            #         shifted_tgt_inputs[:, -1, :],
+            #         shifted_outputs[:, -1, :],
+            #         decoder_output["values"][:, -1, :]
+            #     ]
+            #     maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
+            #                               concat=False)
+            #     readout = layers.nn.linear(maxhid, params.embedding_size, False,
+            #                                False, scope="deepout")
+            #
+            #     # Prediction
+            #     logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
+            #                               scope="softmax")
+            #     return logits
 
             maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
                                       concat=False)
@@ -381,6 +381,9 @@ class RNNsearch(interface.NMTModel):
                 self.logits = logits
             else:
                 logits = self.logits
+
+            if labels is None:
+                return logits
 
             logits = tf.reshape(logits, [-1, tgt_vocab_size])
 
