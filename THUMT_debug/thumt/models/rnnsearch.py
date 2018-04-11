@@ -293,20 +293,20 @@ class RNNsearch(interface.NMTModel):
             self.logits = logits
             return logits
 
-        # maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
-        #                           concat=False)
-        # readout = layers.nn.linear(maxhid, params.embedding_size, False, False,
-        #                            scope="deepout")
-        #
-        # if params.dropout and not params.use_variational_dropout:
-        #     readout = tf.nn.dropout(readout, 1.0 - params.dropout)
-        #
-        # # Prediction
-        # logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
-        #                           scope="softmax")
-        # logits = tf.reshape(logits, [-1, tgt_vocab_size])
+        maxhid = layers.nn.maxout(maxout_features, maxout_size, params.maxnum,
+                                  concat=False)
+        readout = layers.nn.linear(maxhid, params.embedding_size, False, False,
+                                   scope="deepout")
 
-        logits = self.logits
+        if params.dropout and not params.use_variational_dropout:
+            readout = tf.nn.dropout(readout, 1.0 - params.dropout)
+
+        # Prediction
+        logits = layers.nn.linear(readout, tgt_vocab_size, True, False,
+                                  scope="softmax")
+        logits = tf.reshape(logits, [-1, tgt_vocab_size])
+
+        # logits = self.logits
         ce = layers.nn.smoothed_softmax_cross_entropy_with_logits(
             logits=logits,
             labels=labels,
