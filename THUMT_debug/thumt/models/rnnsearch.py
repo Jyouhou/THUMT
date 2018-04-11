@@ -373,7 +373,11 @@ class RNNsearch(interface.NMTModel):
                 self.logits = logits
 
             logits = self.logits
+
+
             if labels is None:
+                logits = tf.reshape(logits, [-1, tgt_vocab_size])
+                print("logits", logits)
                 return logits
 
             logits = tf.reshape(logits, [-1, tgt_vocab_size])
