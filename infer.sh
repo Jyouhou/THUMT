@@ -13,7 +13,7 @@ REF=$TEST/nist02.en
 #mkdir infer
 for ((i=0;i<=300000;i++));
  do
-   MODEL=train/eval/model.ckpt-$i
+   MODEL=train/eval/model.ckpt-${i}
    OUT=infer/nist02.en.trans.iter${i}
    EVAL=infer/nist02.en.trans.eval.iter${i}
    #echo ${MODEL}.index
@@ -25,6 +25,7 @@ for ((i=0;i<=300000;i++));
        --output ${OUT} \
        --checkpoints ${MODEL} --vocabulary ${TRAIN}vocab.zh.32k.txt ${TRAIN}vocab.en.32k.txt \
        --parameters=device_list=[5],decode_alpha=1.0
+    echo finish
     perl $BLEU -lc $REF < $OUT > $EVAL
   fi
  done
