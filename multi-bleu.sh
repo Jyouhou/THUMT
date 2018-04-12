@@ -2,5 +2,6 @@
 
 DATA=~/project/nist_thulac
 VALID=$DATA/dev_test/nist06/
+TEST=/home/rjq/project/nist_thulac/dev_test/nist02/
 
-perl /home/rjq/bin/multi-bleu.perl ${VALID}nist06.en0 ${VALID}nist06.en1 ${VALID}nist06.en2 ${VALID}nist06.en3 < infer/nist06.en.trans
+perl /home/rjq/bin/multi-bleu.perl ${VALID}nist02.en0 ${TEST}nist02.en1 ${TEST}nist02.en2 ${TEST}nist02.en3 < infer/nist02.en.trans
