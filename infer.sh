@@ -9,6 +9,7 @@ VALID=$DATA/dev_test/nist06/
 TEST=/home/rjq/project/nist_thulac/dev_test/nist02/
 BLEU=/home/rjq/bin/multi-bleu.perl
 REF=$TEST/nist02.en
+DEVICE=5
 
 #mkdir infer
 for ((i=0;i<=300000;i++));
@@ -24,7 +25,7 @@ for ((i=0;i<=300000;i++));
        --input ${TEST}nist02.cn \
        --output ${OUT} \
        --checkpoints ${MODEL} --vocabulary ${TRAIN}vocab.zh.32k.txt ${TRAIN}vocab.en.32k.txt \
-       --parameters=device_list=[5],decode_alpha=1.0
+       --parameters=device_list=[$DEVICE],decode_alpha=1.0
     echo finish
     perl $BLEU -lc $REF < $OUT > $EVAL
   fi
