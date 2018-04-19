@@ -11,4 +11,4 @@ python /home/rjq/project/THUMT_ruan/thumt/bin/trainer.py \
        --vocabulary ${TRAIN}vocab.zh.32k.txt ${TRAIN}vocab.en.32k.txt \
        --model RNNsearch \
        --validation ${VALID}nist06.cn --references ${VALID}nist06.en0 ${VALID}nist06.en1 ${VALID}nist06.en2 ${VALID}nist06.en3 \
-       --parameters device_list=[2],train_steps=300000,MRT=True,batch_size=1,label_smoothing=0.0,dropout=0.0,use_variational_dropout=False,learning_rate=1e-4,learning_rate_decay=none
+       --parameters device_list=[2],train_steps=300000,MRT=True,batch_size=1,label_smoothing=0.0,dropout=0.0,use_variational_dropout=False,learning_rate=5e-6,learning_rate_decay=none
