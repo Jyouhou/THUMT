@@ -117,6 +117,9 @@ def get_training_input(filenames, params):
         )
 
         #TODO:filter the length
+        print("=====================")
+        print("=====add debug=======")
+        print("=====================")
         dataset=dataset.filter(
             lambda src,tgt: tf.less_equal(tf.shape(tgt)[0],50)
         )
