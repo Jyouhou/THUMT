@@ -119,9 +119,16 @@ def get_training_input(filenames, params):
         #TODO:filter the length
         print("=====================")
         print("=====add debug=======")
-        print("=====================")
+        def predicate(src,tgt):
+            print(src)
+            print(tgt)
+            print(tf.shape(src))
+            print(tf.shape(tgt))
+            tensor_50 = tf.constant(50,dtype=tf.int32)
+            return tf.less_equal(tf.shape(tgt)[0],tensor_50)
+
         dataset=dataset.filter(
-            lambda src,tgt: tf.less_equal(tf.shape(tgt)[0],50)
+            predicate
         )
 
         # Convert to dictionary
