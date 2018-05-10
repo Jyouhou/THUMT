@@ -118,8 +118,8 @@ def get_training_input(filenames, params):
 
         #TODO:filter the length
         def predicate(src,tgt):
-            print(tf.shape(tgt))
-            return not tf.shape(tgt)>50
+            # print(tf.shape(tgt))
+            return not tf.shape(tgt)[0]>50
         dataset=dataset.filter(
             predicate
         )
