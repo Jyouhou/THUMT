@@ -129,7 +129,7 @@ def get_training_input(filenames, params):
             return False
 
         dataset=dataset.filter(
-            predicate
+            lambda src, tgt: tgt.size()<=50
         )
 
         # Convert to dictionary
