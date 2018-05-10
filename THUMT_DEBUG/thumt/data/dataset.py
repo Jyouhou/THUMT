@@ -125,7 +125,8 @@ def get_training_input(filenames, params):
             print(tf.shape(src))
             print(tf.shape(tgt))
             tensor_50 = tf.constant(50,dtype=tf.int32)
-            return tf.less_equal(tf.shape(tgt)[0],tensor_50)
+            # return tf.less_equal(tf.shape(tgt)[0],tensor_50)
+            return False
 
         dataset=dataset.filter(
             predicate
