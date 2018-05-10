@@ -116,6 +116,11 @@ def get_training_input(filenames, params):
             num_parallel_calls=params.num_threads
         )
 
+        #TODO:filter the length
+        dataset=dataset.filter(
+            lambda src,tgt: (not tf.reduce_any(tf.shape(tgt)>50))
+        )
+
         # Convert to dictionary
         dataset = dataset.map(
             lambda src, tgt: {
