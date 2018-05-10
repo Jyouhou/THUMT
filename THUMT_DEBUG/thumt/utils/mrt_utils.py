@@ -35,8 +35,8 @@ def get_mrt_features(features, params, model):
     features["samples"] = tf.concat([features["samples"], target_pad],
                                     axis=0)
     # Delete repetition
-    features["samples"] = tf.py_func(get_unique, [features["samples"], eos_id],
-                                     tf.int32)
+    # features["samples"] = tf.py_func(get_unique, [features["samples"], eos_id],
+    #                                  tf.int32)
     features["samples"].set_shape([None, None])
     sample_shape = tf.shape(features["samples"])
     # Get sentence length
