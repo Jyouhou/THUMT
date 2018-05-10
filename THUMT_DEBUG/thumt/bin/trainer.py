@@ -415,21 +415,21 @@ def main(args):
 
         config = session_config(params)
 
-        if eval_input_fn is not None:
-            train_hooks.append(
-                hooks.EvaluationHook(
-                    lambda f: search.create_inference_graph(
-                        model.get_evaluation_func(), f, params
-                    ),
-                    lambda: eval_input_fn(eval_inputs, params),
-                    lambda x: decode_target_ids(x, params),
-                    params.output,
-                    config,
-                    params.keep_top_checkpoint_max,
-                    eval_secs=params.eval_secs,
-                    eval_steps=params.eval_steps
-                )
-            )
+        # if eval_input_fn is not None:
+        #     train_hooks.append(
+        #         hooks.EvaluationHook(
+        #             lambda f: search.create_inference_graph(
+        #                 model.get_evaluation_func(), f, params
+        #             ),
+        #             lambda: eval_input_fn(eval_inputs, params),
+        #             lambda x: decode_target_ids(x, params),
+        #             params.output,
+        #             config,
+        #             params.keep_top_checkpoint_max,
+        #             eval_secs=params.eval_secs,
+        #             eval_steps=params.eval_steps
+        #         )
+        #     )
 
         # Create session, do not use default CheckpointSaverHook
         with tf.train.MonitoredTrainingSession(
